@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use frontend\models\MyLogin;
+use frontend\models\Post;
 use Yii;
 use yii\web\Controller;
 
@@ -10,17 +11,12 @@ class PostController extends Controller
 {
     public function actionList()
     {
-        $myLogin = new MyLogin();
-       if (\Yii::$app->request->isPost){
-           $myLogin->load(\Yii::$app->request->post(), '');
-           if ($myLogin->validate()){
-            Yii::$app->session->setFlash("success", "validatsiyadan o'tdi");
-           }
-        else{
-              Yii::$app->session->setFlash("danger", $myLogin->getErrorSummary(false)[0]);
-            }
-       }
-       return $this->render('list', ['model' => $myLogin]);
+        $model = Post::find()->leftJoin('category', 'category.id=post.category_id')->all();
+//        echo "<pre>";
+//
+//        print_r($model); die();
+
+        return $this->render('list', ['model' => $model]);
      }
 
     public function actionAdd()

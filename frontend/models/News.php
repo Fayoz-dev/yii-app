@@ -22,4 +22,10 @@ class News extends ActiveRecord
           [['name', 'family_name', 'middle_name'], 'required'],
         ];
     }
+
+    public function beforeSave($insert)
+    {
+        $this->name = "Lalala";
+        return parent::beforeSave($insert);
+    }
 }

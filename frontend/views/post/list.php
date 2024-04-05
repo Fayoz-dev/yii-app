@@ -1,30 +1,20 @@
-<h1>Bu POst List sahifasi ?</h1>
+<h4>Bu Post List sahifasi</h4>
 <?php
 
 /**
- * @var \frontend\models\MyLogin
+ * @var $model \frontend\models\Post
  */
 
+ echo "<table class='table table-striped'>";
 
-use yii\helpers\Html;
+ foreach ($model as $item) {
+     echo "<tr>";
+     echo "<td>". $item->id. "</td>";
+     echo "<td>". $item->body. "</td>";
+     echo "<td>". $item->author->username. "</td>";
+     echo "<td>". $item->category->title. "</td>";
+     echo "</tr>";
+ }
 
+echo "</table>";
 
-echo Html::beginForm();
-
-echo Html::label("First name");
-echo Html::input('text', 'first_name', $model->first_name);
-
-echo "<br>";
-
-echo Html::label("Email");
-echo Html::input('text', 'email', $model->email);
-
-echo "<br>";
-
-echo Html::label("Age");
-echo Html::input('text', 'age', $model->age);
-
-echo "<br>";
-
-echo Html::submitButton('Submit', ['class'=> 'submit']);
-echo Html::endForm();
