@@ -18,3 +18,7 @@
 
 echo "</table>";
 
+ echo \yii\bootstrap5\LinkPager::widget([
+         'pagination' => $pagination,
+ ]);
+
