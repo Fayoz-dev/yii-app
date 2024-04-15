@@ -127,7 +127,7 @@ class SiteController extends Controller
             } else {
                 Yii::$app->session->setFlash('error', 'There was an error sending your message.');
             }
-
+            Yii::$app->language = 'uz';
             return $this->refresh();
         }
 

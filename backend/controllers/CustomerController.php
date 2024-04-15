@@ -2,19 +2,17 @@
 
 namespace backend\controllers;
 
-use common\models\Product;
-use common\models\ProductImage;
-use common\models\ProductSearch;
+use common\models\Customer;
+use common\models\CustomerSearch;
 use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\web\UploadedFile;
+use yii\filters\VerbFilter;
 
 /**
- * ProductController implements the CRUD actions for Product model.
+ * CustomerController implements the CRUD actions for Customer model.
  */
-class ProductController extends Controller
+class CustomerController extends Controller
 {
     /**
      * @inheritDoc
@@ -32,27 +30,29 @@ class ProductController extends Controller
                 ],
                 'access' => [
                     'class' => AccessControl::class,
-                    'only' => ['index', 'create', 'update', 'delete'],
                     'rules' => [
-                        [
-                            'allow' => true,
-                            'actions' => ['index', 'create', 'update', 'delete'],
-                            'roles' => ['@'],
-                        ],
+                        'allow' => true,
+                        'actions' => ['index', 'create','delete', 'update', 'view'],
+                        'roles' => ['admin']
                     ],
-                ],
+                    'rules' => [
+                        'allow' => true,
+                        'actions' => ['index','view'],
+                        'roles' => ['moderator']
+                    ]
+                ]
             ]
         );
     }
 
     /**
-     * Lists all Product models.
+     * Lists all Customer models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new ProductSearch();
+        $searchModel = new CustomerSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -62,7 +62,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Displays a single Product model.
+     * Displays a single Customer model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -75,27 +75,17 @@ class ProductController extends Controller
     }
 
     /**
-     * Creates a new Product model.
+     * Creates a new Customer model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Product();
+        $model = new Customer();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-                $imageName = time();
-                $productImage = new ProductImage();
-                $productImage->product_id = $model->id;
-                $productImage->order = 1;
-                $productImage->image = $imageName . '.' . $model->imageFile->extension;
-                $productImage->save();
-                if ($model->upload($imageName)) {
-                    return $this->redirect(['view', 'id' => $model->id]);
-                }
-
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -107,7 +97,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Updates an existing Product model.
+     * Updates an existing Customer model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -127,7 +117,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Deletes an existing Product model.
+     * Deletes an existing Customer model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -141,15 +131,15 @@ class ProductController extends Controller
     }
 
     /**
-     * Finds the Product model based on its primary key value.
+     * Finds the Customer model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Product the loaded model
+     * @return Customer the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Product::findOne(['id' => $id])) !== null) {
+        if (($model = Customer::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

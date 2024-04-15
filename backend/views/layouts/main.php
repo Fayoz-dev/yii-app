@@ -39,8 +39,10 @@ AppAsset::register($this);
         ['label' => 'Category', 'url' => ['/category/index']],
         ['label' => 'Product', 'url' => ['/product/index']],
         ['label' => 'Customer', 'url' => ['/customer/index']],
-        ['label' => 'Order', 'url' => ['/order/index']],
     ];
+//    if (Yii::$app->user->identity->isAdmin()) {
+//        $menuItems[] = ['label' => 'Bu faqat admin uchun', 'url' => ['/site/login']];
+//    }
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     }     

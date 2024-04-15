@@ -12,7 +12,6 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'defaultRoute' => 'category/index',
     'bootstrap' => ['log'],
-    'modules' => [],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -47,5 +46,35 @@ return [
         ],
 
     ],
+    'modules' => [
+        'admin' => [
+            'class' => 'mdm\admin\Module',
+            'layout' => 'left-menu',
+            'mainLayout' => '@backend/views/layouts/main.php',
+            'controllerMap' => [
+                'assignment' => [
+                    'class' => 'mdm\admin\controllers\AssignmentController',
+                    'userClassName' => 'common\models\User',
+                    'idField' => 'id'
+                ],
+            ],
+            'menus' => [
+                'assignment' => [
+                    'label' => 'Grand Access' // change label
+                ],
+                'route' => null, // disable menu route
+            ]
+        ],
+    ],
+
+//    'as access' => [
+//      'class' => 'mdm\admin\components\AccessControl',
+//        'allowActions' => [
+//            'admin/*',
+//            'site/login',
+//            'site/logout',
+//            'site/error,'
+//        ]
+//    ],
     'params' => $params,
 ];
